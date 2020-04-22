@@ -92,3 +92,15 @@ JS浮点数的计算还是需要采用转换成整数的方式来进行，这样
 const reg = /\d/
 ```
 
+
+
+###### 2、写一个 UTF-8 Encoding 的函数
+
+```js
+function encodeUTF8(str) {
+	return str.split('').reduce((acc, item) => acc += `\\u${item.charCodeAt().toString(16)}.padStart(4, '0')`, '');
+}
+```
+
+
+
