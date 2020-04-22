@@ -92,15 +92,92 @@ JS浮点数的计算还是需要采用转换成整数的方式来进行，这样
 const reg = /\d/
 ```
 
+```js
+NumericLiteral ::
+	DecimalLiteral
+	BinaryIntegerLiteral
+	OctalIntegerLiteral
+	HexIntegerLiteral
+  
+DecimalLiteral ::
+	DecimalIntegerLiteral . DecimalDigitsopt ExponentPartopt
+	. DecimalDigits ExponentPartopt
+	DecimalIntegerLiteral ExponentPartopt
+  
+DecimalIntegerLiteral ::
+	0
+	NonZeroDigit DecimalDigitsopt
+
+DecimalDigits ::
+	DecimalDigit
+	DecimalDigits DecimalDigit
+  
+DecimalDigit :: one of
+	0 1 2 3 4 5 6 7 8 9
+
+NonZeroDigit :: one of
+	1 2 3 4 5 6 7 8 9
+
+ExponentPart ::
+	ExponentIndicator SignedInteger
+  
+ExponentIndicator :: one of
+	e E
+  
+SignedInteger ::
+	DecimalDigits
+	+ DecimalDigits
+	- DecimalDigits
+
+BinaryIntegerLiteral ::
+	0b BinaryDigits
+	0B BinaryDigits
+  
+BinaryDigits ::
+	BinaryDigit
+	BinaryDigits BinaryDigit
+  
+BinaryDigit :: one of
+	0 1
+
+OctalIntegerLiteral ::
+	0o OctalDigits
+	0O OctalDigits
+  
+OctalDigits ::
+	OctalDigit
+	OctalDigits OctalDigit
+
+OctalDigit :: one of
+	0 1 2 3 4 5 6 7
+
+HexIntegerLiteral ::
+	0x HexDigits
+	0X HexDigits
+
+HexDigits ::
+	HexDigit
+	HexDigits HexDigit
+  
+HexDigit :: one of
+	0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F
+```
+
 
 
 ###### 2、写一个 UTF-8 Encoding 的函数
 
 ```js
 function encodeUTF8(str) {
-	return str.split('').reduce((acc, item) => acc += `\\u${item.charCodeAt().toString(16)}.padStart(4, '0')`, '');
+	return str.split('').reduce((acc, item) => acc += `\\u${item.charCodeAt().toString(16).padStart(4, '0')}`, '');
+}
+
+function encodeUTF8(str) {
+	return str.split('').map((i) => `\\u${i.charCodeAt().toString(16).padStart(4, '0')}`).join('');
 }
 ```
 
 
+
+###### 3、写一个正则表达式，匹配所有的字符串直接量，单引号和双引号
 
