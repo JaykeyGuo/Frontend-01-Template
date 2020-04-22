@@ -163,6 +163,23 @@ HexDigit :: one of
 	0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F
 ```
 
+```js
+// 小数
+
+// 二进制
+const regBinary = /(^0b|0B)[0-1]/;
+// 八进制
+const regOctal = /(^0o|0O)[0-7]/;
+// 十进制
+const regTen = /[0-9]/;
+// 十六进制
+const regHex = /(^0x|0X)[0-9a-fA-F]/;
+// 科学计数法
+const regSCI = /(^[-/+]|0?[1-9])e(^[-/+]|0?[1-9])/
+```
+
+
+
 
 
 ###### 2、写一个 UTF-8 Encoding 的函数
