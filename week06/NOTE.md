@@ -575,3 +575,8 @@ module.exports.parseHTML = function parseHTML(html) {
 ```
 
 跟着视频写代码的问题是，很容易在一些细节上出错，就是不等或者全等的时候。在CSS计算的部分，其实关键的是将CSS和DOM合二为一，这样便于之后的渲染，所以计算CSS的位置尤为重要，这样才不会影响页面的渲染。
+
+---
+
+PS: [toy-browser 项目地址](https://github.com/JaykeyGuo/toy-browser)
+
