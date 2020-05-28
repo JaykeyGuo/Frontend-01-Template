@@ -1,7 +1,7 @@
 const net = require('net');
 const images = require('images');
 
-const parser = require('./parser.js');
+const parser = require('./parse.js');
 const render = require('./render.js');
 
 class Request {
