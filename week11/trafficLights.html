@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traffic Lights</title>
+  <style>
+    #light {
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      background-color: grey;
+    }
+    div {
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      background-color: grey;
+    }
+    .red.light {
+      background-color: red;
+    }
+    .green.light {
+      background-color: green;
+    }
+    .yellow.light {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div id="light"></div> -->
+  <div class="red"></div>
+  <div class="yellow"></div>
+  <div class="green"></div>
+</body>
+
+</html>
+
+<script>
+  // FIXME:
+  // let light = document.getElementById('light');
+  // async function sleep(time, color) {
+  //   await setTimeout(() => {
+  //     light.style.backgroundColor = color;
+  //   }, time * 1000);
+  // }
+
+  // async function changeLight() {
+  //   await sleep(10, 'lightgreen');
+  //   await sleep(5, 'red');
+  //   await sleep(2, 'yellow');
+  // }
+
+  // changeLight();
+
+  // TODO:
+  // function sleep(duration) {
+  //   return new Promise(function (resolve) {
+  //     setTimeout(resolve, duration);
+  //   })
+  // }
+  // async function changeColor(duration, color) {
+  //   document.getElementById("light").style.background = color;
+  //   await sleep(duration);
+
+  // }
+  // async function main() {
+  //   while (true) {
+  //     await changeColor(3000, "green");
+  //     await changeColor(1000, "yellow");
+  //     await changeColor(2000, "red");
+  //   }
+  // }
+  // main()
+
+  // TODO:
+    function green() {
+      let lights = document.querySelector(div);
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove('light');
+        document.getElementsByClassName('green')[0].classList.add('light');
+      }
+    };
+    function red() {
+      let lights = document.querySelector(div);
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove('light');
+        document.getElementsByClassName('red')[0].classList.add('light');
+      }
+    };
+    function yellow() {
+      let lights = document.querySelector(div);
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove('light');
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+      }
+    };
+
+    function sleep (t) {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, t);
+      })
+    };
+
+    // function happen(element, eventName) {
+    //   return new Promise((resolve, reject) => {
+    //     element.addEventListener(event, resolve, {once: true});
+    //   })
+    // }
+
+    // async function go() {
+    //   while(true) {
+    //     await happen(green, sleep(3000));
+    //     await happen(green, sleep(3000));
+    //     await happen(green, sleep(3000));
+    //   }
+    // }
+
+    function* go() {
+      while(true) {
+        green();
+        yield sleep(1000);
+        yellow();
+        yield sleep(200);
+        red();
+        yield sleep(500);
+      }
+    }
+
+    function co(iterator) {
+      let {value, donw} =  iterator.next();
+      if (done) {
+        return;
+      }
+      if (value instanceof Promise) {
+        value.then(() => {
+          co(iterator);
+        })
+      }
+    }
+
+    co(go);
+</script>
