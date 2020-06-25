@@ -3,23 +3,32 @@
 
   var dictionary = ['Number', 'Whitespace', 'LineTerminator', '+', '-', '*', '/'];
 
-  function tokenize(source) {
+  function* tokenize(source) {
     var result = null;
     var lastIndex = 0;
 
     do {
       lastIndex = regexp.lastIndex;
       result = regexp.exec(source);
+      console.log(result)
       if (!result) break;
+
+      let token = {
+        type: null,
+        value: null
+      }
 
       for (var i = 1; i <= dictionary.length; i++) {
         if (result[i + 1]) {
-          console.log(dictionary[i]) ;
+          token.type = (dictionary[i]) ;
         }
-        console.log(result[0]);
+        token.value = (result[0]);
+        yield token;
       }
     } while(result);
   }
 
-  tokenize('1024 + 100 * 25');
+  for (let token of tokenize('1024 + 100 * 25')) {
+    console.log(token);
+  };
 </script>
