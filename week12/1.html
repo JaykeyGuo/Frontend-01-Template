@@ -1,0 +1,34 @@
+<script>
+  var regexp = /([0-9\.]+)|([ ])+|([\r\n]+)|(\+)|(\-)|(\*)|(\/)/g;
+
+  var dictionary = ['Number', 'Whitespace', 'LineTerminator', '+', '-', '*', '/'];
+
+  function* tokenize(source) {
+    var result = null;
+    var lastIndex = 0;
+
+    do {
+      lastIndex = regexp.lastIndex;
+      result = regexp.exec(source);
+      console.log(result)
+      if (!result) break;
+
+      let token = {
+        type: null,
+        value: null
+      }
+
+      for (var i = 1; i <= dictionary.length; i++) {
+        if (result[i + 1]) {
+          token.type = (dictionary[i]) ;
+        }
+        token.value = (result[0]);
+        yield token;
+      }
+    } while(result);
+  }
+
+  for (let token of tokenize('1024 + 100 * 25')) {
+    console.log(token);
+  };
+</script>
