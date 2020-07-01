@@ -1,0 +1,65 @@
+<script>
+  var regexp = /([0-9\.]+)|([ ])+|([\r\n]+)|(\+)|(\-)|(\*)|(\/)/g;
+
+  var dictionary = ['Number', 'Whitespace', 'LineTerminator', '+', '-', '*', '/'];
+
+  function* tokenize(source) {
+    var result = null;
+    var lastIndex = 0;
+
+    while(true) {
+      lastIndex = regexp.lastIndex;
+      // console.log(lastIndex);
+      result = regexp.exec(source);
+      // console.log(result);
+      if (!result) break;
+      // 处理不能匹配的字符
+      if (regexp.lastIndex - lastIndex > result[0].length) {
+        throw new Error('Unexpected token "' +
+        source.slice(lastIndex, regexp.lastIndex - result[0].length) + '"!');
+      }
+
+      let token = {
+        type: null,
+        value: null
+      }
+
+      console.log(result);
+
+      for (var i = 1; i <= dictionary.length; i++) {
+        console.log(result[i + 1], i + 1);
+        if (result[i + 1]) {
+          token.type = (dictionary[i]) ;
+        }
+        token.value = (result[0]);
+      }
+      yield token;
+    }
+
+    yield { type: 'EOF' };
+  }
+
+  function Expression(tokens) {
+
+  }
+
+  function AdditiveExpression(source) {
+
+  }
+
+  function MultiplicativeExpression(source) {
+    console.log(source);
+  }
+
+  let source = [];
+
+  // for (let token of tokenize('1024~ + 100 * 25')) {
+  for (let token of tokenize('1024 + 100 * 25')) {
+    // console.log(token);
+    if (token.type !== 'Whitespace' && token.type !== 'LineTerminator') {
+      source.push(token);
+    }
+  };
+
+  MultiplicativeExpression(source);
+</script>
