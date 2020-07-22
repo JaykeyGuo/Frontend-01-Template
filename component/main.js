@@ -1,135 +1,135 @@
-function create(Cls, attirbutes, ...children) {
-  let o;
+import { create, Text, Wrapper } from './createElement.js';
 
-  if (typeof Cls === 'string') {
-    o = new Wrapper();
-  } else  {
-    o = new Cls({
-      config: "99",
-    });
-  }
+// import { Carousel } from './carousel.vue';
 
-  for (let name in attirbutes) {
-    o.setAttribute(name, attirbutes[name]);
-  }
-
-  for (let child of children) {
-    if (typeof child === 'string') {
-      child = new Text(child);
-    }
-    o.appendChild(child);
-    // o.children.push(child);
-  }
-
-  // console.log(children);
-  return o;
-}
-
-class Text {
-  constructor(text) {
-    // console.log(config);
-    this.children = [];
-    this.root = document.createTextNode(text);
-  }
-  mountTo(parent) {
-    parent.appendChild(this.root);
-  }
-}
-
-class Wrapper {
-  constructor(type) {
-    // console.log(config);
-    this.children = [];
-    this.root = document.createElement(type);
-  }
-  // set id(val) {
-  //   console.log("Parent::class", val);
-  // }
-  setAttribute(name, value) {
-    // console.log(name, value);
-    this.root.setAttribute(name, value);
-  }
-
-  appendChild(child) {
-    // console.log("Parent::appendChild", child);
-    this.children.push(child);
-  }
-
-  mountTo(parent) {
-    parent.appendChild(this.root);
-
-    for (let child of this.children) {
-      child.mountTo(this.root);
-    }
-  }
-}
-
-class MyComponent {
+class Carousel {
   constructor(config) {
-    // console.log(config);
     this.children = [];
-    // this.root = document.createElement('div');
   }
-  // set id(val) {
-  //   console.log("Parent::class", val);
-  // }
-  setAttribute(name, value) {
-    // console.log(name, value);
-    this.root.setAttribute(name, value);
+  render() {
+    let children = this.data.map(url => {
+      let element = <img src={url} alt="" />
+      element.addEventListener('dragstart', event => event.preventDefault());
+      return element;
+    });
+
+    let root = <div class='carousel'>
+      { children }
+    </div>;
+
+    let position = 0;
+
+    let nextPic = () => {
+      let nextPostion = (position + 1) % this.data.length;
+
+      let current = this.root.childNodes[position];
+      let next = this.root.childNodes[nextPostion];
+
+      current.style.transition = 'ease 0s';
+      next.style.transition = 'ease 0s';
+
+      current.style.transform = `translateX(${- 100 * position}%)`;
+      next.style.transform = `translateX(${100 - 100 * nextPostion}%)`;
+
+      setTimeout(() => {
+        current.style.transition = 'ease 0.5s';
+        next.style.transition = 'ease 0.5s';
+
+        current.style.transform = `translateX(${- 100 - 100 * position}%)`;
+        next.style.transform = `translateX(${-100 * nextPostion}%)`;
+
+        position = nextPostion;
+      }, 16);
+
+      setTimeout(nextPic, 2000);
+
+      // 使用RAF实现
+      // requestAnimationFrame(() => {
+      //   requestAnimationFrame(() => {
+      //     current.style.transition = 'ease 0.5s';
+      //     next.style.transition = 'ease 0.5s';
+
+      //     current.style.transform = `translateX(${- 100 - 100 * position}%)`;
+      //     next.style.transform = `translateX(${-100 * nextPostion}%)`;
+
+      //     position = nextPostion;
+      //   });
+      // })
+
+    }
+    setTimeout(nexPic, 3000);
+    root.addEventListener('mousedown', (event) => {
+      let startX = event.clientX, startY = event.clintY;
+
+      let lastPostion = (position - 1 + this.data.length) % this.data.length;
+      let nextPostion = (position + 1) % this.data.length;
+
+      let current = this.root.childNodes[position];
+      let last = this.root.childNodes[lastPostion];
+      let next = this.root.childNodes[nextPostion];
+
+      current.style.transition = 'ease 0s';
+      last.style.transition = 'ease 0s';
+      next.style.transition = 'ease 0s';
+
+      current.style.transform = `translateX(${-500 * position}px)`;
+      last.style.transform = `translateX(${-500 - 500 * lastPostion}px)`;
+      next.style.transform = `translateX(${500 - 500 * nextPostion}px)`;
+
+      let move = (event) => {
+        current.style.transform = `translateX(${event.clientX - startX - 500 * position}px)`;
+        last.style.transform = `translateX(${event.clientX - startX - 500 - 500 * lastPostion}px)`;
+        next.style.transform = `translateX(${event.clientX - startX + 500 - 500 * nextPostion}px)`;
+      }
+
+      let up = (event) => {
+        let offset = 0;
+
+        if (event.clientX - startX > 250) {
+          offset = 1;
+        } else if (event.clientX - startX < -250) {
+          offset = -1;
+        }
+
+        current.style.transition = '';
+        last.style.transition = '';
+        next.style.transition = '';
+
+        current.style.transform = `translateX(${offset * 500 -500 * position}px)`;
+        last.style.transform = `translateX(${offset * 500 - 500 - 500 * lastPostion}px)`;
+        next.style.transform = `translateX(${offset * 500 + 500 - 500 * nextPostion}px)`;
+
+        position = (position + offset + this.data.length) % this.data.length;
+
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', up);
+      }
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+
+    })
+    return root;
   }
 
   appendChild(child) {
-    // console.log("Parent::appendChild", child);
     this.children.push(child);
   }
 
-  render() {
-    return <article>
-      <header>I'm a header</header>
-      {this.slot}
-      <footer>I'm a footer</footer>
-    </article>
+  setAttribute(name, value) {
+    this[name] = value;
   }
-
   mountTo(parent) {
-    this.slot = <div></div>
-    // parent.appendChild(this.root);
-    for (let child of this.children) {
-      debugger;
-      this.slot.appendChild(child);
-      // child.mountTo(this.root);
-    }
     this.render().mountTo(parent);
   }
 }
 
-// class Child {
-//   constructor(config) {
-//     console.log(config);
-//     this.children = [];
-//     this.root = document.createElement('div');
-//   }
-//   set id(val) {
-//     console.log("Parent::class", val);
-//   }
-//   setAttribute(name, value) {
-//     console.log(name, value);
-//     this.root.setAttribute(name, value);
-//   }
+console.log(Carousel)
 
-//   mountTo(parent) {
-//     parent.appendChild(this.root);
-//   }
-
-//   appendChild(child) {
-//     console.log("Parent::appendChild", child);
-//     child.appendChild(child);
-//   }
-
-// }
-
-let component = <MyComponent>
-  <div>text text text</div>
-</MyComponent>;
-
+let component = <Carousel data={[
+  "https://static001.geekbang.org/resource/image/bb/21/bb38fb7c1073eaee1755f81131f11d21.jpg",
+  "https://static001.geekbang.org/resource/image/1b/21/1b809d9a2bdf3ecc481322d7c9223c21.jpg",
+  "https://static001.geekbang.org/resource/image/b6/4f/b6d65b2f12646a9fd6b8cb2b020d754f.jpg",
+  "https://static001.geekbang.org/resource/image/73/e4/730ea9c393def7975deceb48b3eb6fe4.jpg",
+]}>
+</Carousel>;
 component.mountTo(document.body);

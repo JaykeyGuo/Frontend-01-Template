@@ -20,6 +20,12 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.vue/,
+        use: {
+          loader: require.resolve('./myloader.js')
+        }
+      }
     ],
   },
 };
