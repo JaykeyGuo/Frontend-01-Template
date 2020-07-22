@@ -5,10 +5,13 @@ import { create, Text, Wrapper } from './createElement.js';
 class Carousel {
   constructor(config) {
     this.children = [];
+    this.attributes = new Map();
+    this.properties = new Map();
   }
   render() {
     let children = this.data.map(url => {
-      let element = <img src={url} alt="" />
+      let element = <img src={url} />
+      console.log(element)
       element.addEventListener('dragstart', event => event.preventDefault());
       return element;
     });
@@ -21,9 +24,8 @@ class Carousel {
 
     let nextPic = () => {
       let nextPostion = (position + 1) % this.data.length;
-
-      let current = this.root.childNodes[position];
-      let next = this.root.childNodes[nextPostion];
+      let current = children[position];
+      let next = children[nextPostion];
 
       current.style.transition = 'ease 0s';
       next.style.transition = 'ease 0s';
@@ -32,8 +34,8 @@ class Carousel {
       next.style.transform = `translateX(${100 - 100 * nextPostion}%)`;
 
       setTimeout(() => {
-        current.style.transition = 'ease 0.5s';
-        next.style.transition = 'ease 0.5s';
+        current.style.transition = ''; // = '' means use css rule to move
+        next.style.transition = '';
 
         current.style.transform = `translateX(${- 100 - 100 * position}%)`;
         next.style.transform = `translateX(${-100 * nextPostion}%)`;
@@ -57,16 +59,17 @@ class Carousel {
       // })
 
     }
-    setTimeout(nexPic, 3000);
+    setTimeout(nextPic, 3000);
+
     root.addEventListener('mousedown', (event) => {
       let startX = event.clientX, startY = event.clintY;
 
       let lastPostion = (position - 1 + this.data.length) % this.data.length;
       let nextPostion = (position + 1) % this.data.length;
 
-      let current = this.root.childNodes[position];
-      let last = this.root.childNodes[lastPostion];
-      let next = this.root.childNodes[nextPostion];
+      let current = children[position];
+      let last = children[lastPostion];
+      let next = children[nextPostion];
 
       current.style.transition = 'ease 0s';
       last.style.transition = 'ease 0s';
@@ -118,6 +121,7 @@ class Carousel {
   setAttribute(name, value) {
     this[name] = value;
   }
+
   mountTo(parent) {
     this.render().mountTo(parent);
   }
@@ -132,4 +136,5 @@ let component = <Carousel data={[
   "https://static001.geekbang.org/resource/image/73/e4/730ea9c393def7975deceb48b3eb6fe4.jpg",
 ]}>
 </Carousel>;
+
 component.mountTo(document.body);

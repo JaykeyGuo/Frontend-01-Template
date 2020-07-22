@@ -15,15 +15,35 @@ export function create(Cls, attirbutes, ...children) {
     o.setAttribute(name, attirbutes[name]);
   }
 
-  for (let child of children) {
-    if (typeof child === 'string') {
-      child = new Text(child);
+  // for (let child of children) {
+  //   if (typeof child === 'string') {
+  //     child = new Text(child);
+  //   }
+  //   o.appendChild(child);
+  //   // o.children.push(child);
+  // }
+
+  // // console.log(children);
+
+  let visit = (children) => {
+    console.log('----=-=-=-=-=-=');
+    console.log(children);
+    for (const child of children) {
+      if (typeof child === 'object' && child instanceof Array) {
+        visit(child);
+        continue;
+      } else if (typeof child === 'string') {
+        child = new Text(child);
+      }
+
+      if (!Array.isArray(child)) {
+        o.appendChild(child);
+      }
     }
-    o.appendChild(child);
-    // o.children.push(child);
   }
 
-  // console.log(children);
+  visit(children);
+
   return o;
 }
 
@@ -55,6 +75,14 @@ export class Wrapper {
   appendChild(child) {
     // console.log("Parent::appendChild", child);
     this.children.push(child);
+  }
+
+  addEventListener() {
+    this.root.addEventListener(...arguments);
+  }
+
+  get style() {
+    return this.root.style;
   }
 
   mountTo(parent) {
