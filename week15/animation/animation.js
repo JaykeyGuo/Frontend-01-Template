@@ -5,25 +5,25 @@ export class TimeLine {
     this.rafId = null;
     this.state = 'inited'
     // TODO: Tthis.acitveAnimation
+    this.startTime = null;
   }
 
   tick() {
-    console.log('tick');
     let animations = this.animations.filter(animation => !animation.finished);
     let t = Date.now() - this.startTime;
 
     for (let animation of this.animations) {
-      let { object, property, template, start, end, duration, delay, timingFunction, initTime } = animation;
+      let { object, property, template, start, end, duration, delay, timingFunction, startTime } = animation;
 
-      let progression = timingFunction((t - delay - initTime) / duration);
+      let progression = timingFunction((t - delay - startTime) / duration);
 
-      if (t > duration + delay) {
+      if (t > duration + delay + startTime) {
         progression = 1;
         animation.finished = true;
       }
 
 
-      let value = start + progression * (end - start);
+      let value = animation.valueFromPreogression(progression);
 
       object[property] = template(value);
 
@@ -74,19 +74,19 @@ export class TimeLine {
     this.tick();
   }
 
-  add(animation, initTime) {
+  add(animation, startTime) {
     this.animations.push(animation);
     animation.finished = false;
     if (this.state === 'playing') {
-      animation.initTime = initTime || Date.now();
+      animation.startTime = startTime !== void 0 ? startTime : Date.now() - this.startTime;
     } else {
-      animation.initTime = initTime || 0;
+      animation.startTime = startTime !== void 0 ? startTime : 0;
     }
   }
 }
 
 export class Animation {
-  constructor(object, property, template, start, end, duration, delay, timingFunction) {
+  constructor(object, property, start, end, duration, delay, timingFunction, template) {
     this.object = object;
     this.property = property;
     this.template = template;
@@ -98,6 +98,35 @@ export class Animation {
     //   return (t) => start + (t / duration) * (end - start);
     // })
     this.timingFunction = timingFunction;
+  }
+
+  valueFromPreogression(progression) {
+    return this.start + progression * (this.end - this.start);
+  }
+}
+
+export class ColorAnimation {
+  constructor(object, property, start, end, duration, delay, timingFunction, template) {
+    this.object = object;
+    this.property = property;
+    this.template = template || ((v) => `rgba(${v.r}, ${v.g}, ${v.b}, ${v.a})`);
+    this.start = start;
+    this.end = end;
+    this.duration = duration;
+    this.delay = delay;
+    // this.timingFunction = timingFunction || ((start, end) => {
+    //   return (t) => start + (t / duration) * (end - start);
+    // })
+    this.timingFunction = timingFunction;
+  }
+
+  valueFromPreogression(progression) {
+    return {
+      r: this.start.r + progression * (this.end.r - this.start.r),
+      g: this.start.g + progression * (this.end.g - this.start.g),
+      b: this.start.b + progression * (this.end.b - this.start.b),
+      a: this.start.a + progression * (this.end.a - this.start.a),
+    }
   }
 }
 
