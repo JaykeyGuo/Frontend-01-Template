@@ -23,7 +23,7 @@
   class Sorted {
     constructor(data, compare) {
       this.data = data.slice();
-      this.compare = compare || ((a, b) => a -b);
+      this.compare = compare || ((a, b) => a - b);
     }
     take() {
       if (!this.data.length) {
