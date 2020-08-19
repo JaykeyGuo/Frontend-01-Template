@@ -43,20 +43,20 @@ let ranges = [];
 
 ```js
 Carousel
-	state
-  	activeIndex
-	property
-  	loop time imglist color forward
+  state
+    activeIndex
+  property
+    loop time imglist color forward
   attribute
-  	startIndex loop time imglist autoplay color forward
+    startIndex loop time imglist autoplay color forward
   children
-  	2
-	event
-  	change click hover swipe resize dbclick
+    2
+  event
+    change click hover swipe resize dbclick
   method
-  	next() prev() goto() play() stop()
-	config
-  	mode: 'useRAF', 'useTimeout'
+    next() prev() goto() play() stop()
+  config
+    mode: 'useRAF', 'useTimeout'
 
 ```
 
