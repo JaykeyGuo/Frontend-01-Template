@@ -4,7 +4,7 @@
 
 ##### 优先级最高的运算符
 
-Reference 
+Reference
 
 只有在delete和assign的时候才体现对应对象的“引用”能力
 
@@ -22,7 +22,7 @@ Reference
 - super['b']
 - a.b
 - a[b]
-- foo\`test` 
+- foo\`test`
 
 **New**
 
@@ -31,7 +31,7 @@ Reference
 **Call**
 
 - foo()
-- super	
+- super
 - foo()['b']
 - foo().b
 - foo()\`abc\`
@@ -46,7 +46,7 @@ Reference
 
 - void foo()
 
-- typeof a 
+- typeof a
 
 - +a
 - -a

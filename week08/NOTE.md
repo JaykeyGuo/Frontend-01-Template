@@ -7,7 +7,7 @@
 >
 > 因为在first-line之后修改对应的布局之后，会对当前的行盒作出修改，这个时候无法匹配对应的CSS盒，而first-letter是文本的第一个字符，这个是确定的，可以对这个文字产生的盒子进行设置。
 >
-> 
+>
 >
 > **为什么frist-line不能使用float**
 >
@@ -98,9 +98,9 @@ match('div #id.class', document.getElementById('id'));
 
 正常流的行盒子，vertical-align在top/bottom/middle的情况下会根据不同inline-box来撑开行盒子的高度。
 
-> \1.  Vertical-align: baseline，是拿自己的 baseline 去对其行的 baseline 
+> \1.  Vertical-align: baseline，是拿自己的 baseline 去对其行的 baseline
 >
->   \1.  Vertical-align: top，middle，bottom，是拿自己的 ”顶部“ “中线” ”底部“ 去对其行的 ”顶部“ “中线” ”底部“ 
+>   \1.  Vertical-align: top，middle，bottom，是拿自己的 ”顶部“ “中线” ”底部“ 去对其行的 ”顶部“ “中线” ”底部“
 >
 >   \3.  vertical-align: text-top，text-bottom，是拿自己的 ”顶部“ ”底部“ 去对齐行的 text-top 和 text-bottom 线吗？
 >

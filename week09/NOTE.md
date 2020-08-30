@@ -21,7 +21,7 @@
         height: 600px;
       }
     }
-    
+
     .box {
       width: 200px;
       height: 200px;
@@ -106,7 +106,7 @@
 
     > 事件处理函数不一定是函数，也可以是个 JavaScript 具有 handleEvent 方法的对象。
 
-    ```
+    ```js
     var o = {
       handleEvent: event => console.log(event)
     };
@@ -121,29 +121,29 @@
 
     ```html
     <div id="a" style="width: 500px; height: 300px; background-color: pink;">
-        <div id="b" style="width: 500px; height: 200px; background-color: aqua;"></div>
+      <div id="b" style="width: 500px; height: 200px; background-color: aqua;"></div>
     </div>
     <script>
-    	let a = document.getElementById("a");
-        let b = document.getElementById("b");
-        a.addEventListener("click", function() {
-            console.log("a >>> 捕获");
-        }, true);
-        a.addEventListener("click", function() {
-            console.log("a >>> 冒泡");
-        }, false);
-        b.addEventListener("click", function() {
-            console.log("b >>> 捕获");
-        }, true);
-        b.addEventListener("click", function() {
-            console.log("b >>> 冒泡");
-        }, false);
-        /*
-         a >>> 捕获
-         b >>> 捕获
-         b >>> 冒泡
-         a >>> 冒泡
-        */ 
+      let a = document.getElementById("a");
+      let b = document.getElementById("b");
+      a.addEventListener("click", function() {
+          console.log("a >>> 捕获");
+      }, true);
+      a.addEventListener("click", function() {
+          console.log("a >>> 冒泡");
+      }, false);
+      b.addEventListener("click", function() {
+          console.log("b >>> 捕获");
+      }, true);
+      b.addEventListener("click", function() {
+          console.log("b >>> 冒泡");
+      }, false);
+      /*
+        a >>> 捕获
+        b >>> 捕获
+        b >>> 冒泡
+        a >>> 冒泡
+      */
     </script>
     ```
 
